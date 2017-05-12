@@ -97,6 +97,7 @@ class Gui():
 	def __init__(self):
 		self.root = tk.Tk()
 		self.root.geometry('800x480')
+		self.root.wm_attributes('-fullscreen','true')
 
 		self.mainFrame = tk.Frame(self.root)
 		self.mainFrame.pack(side='top')

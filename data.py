@@ -39,6 +39,8 @@ def updateCarValues(line, Car):
  		if d == '':
  			error = 'No Data'
  			return error
+ 		if d.find('\\x') != -1:
+ 			d.strip('\\x')
 
 	if ID == CANID['Brake']:
 		if int('0x' + Data[0],16) == 1:
@@ -109,7 +111,6 @@ def updateCarValues(line, Car):
 		pass
 
 	elif ID == CANID['BMS Error Flags']:
-		print(Data)
 		errorFlag = int('0x' + Data[0] + Data[1], 16)
 
 		if errorFlag & 0b1:

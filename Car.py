@@ -1,5 +1,6 @@
 import time as t
 
+
 class Motor_c:
 	def __init__(self):
 			self.State = ""
@@ -28,17 +29,42 @@ class Battery_c:
 			self.Cell_Temp = [0,0,0,0]
 
 
-class Car_c:
+class Interface_c:
 	def __init__(self):
-			self.Lights = False
+			self.Brake = False
+			self.Light_Level = 0
 			self.LapButton = False
-			self.Window_Wiper = False
+			self.WindowWiper_State = False
+			self.WindowWiper_Speed = 0
+			self.HazardLights = False
 			self.BlinkerLeft = False
 			self.BlinkerRight = False
-			self.Emergency_Stop = False
-			self.Emergency_Lights = False
+			self.CC_Button = False
+			self.Horn = False
+			self.ThrottleLeft = 0
+			self.ThrottleRight = 0
 			self.Deadmanswitch = False
-			self.Cruise_Control = False
+
+
+class Lights_c:
+			self.Headlights = False
+			self.Headlight_Level = 0
+			self.Brakelights = False
+			self.RearLights = False
+			self.RearLight_Level = 0
+			self.BlinkerLeft = False
+			self.BlinkerRight = False
+
+
+class Time_c:
+			self.FirstTime = t.time()
+			self.TotalTime = 0
+			self.LapTimes = []
+			self.LapTimeIndex = 0
+
+
+class Car_c:
+	def __init__(self):
 			self.CC_Velocity = 0
 			self.Throttle = 0
 			self.Velocity = 0
@@ -46,12 +72,11 @@ class Car_c:
 			self.RPM = 0
 			self.Torque = 0
 			self.Acceleration = 0
-			self.Brake = False
+
 			self.Motor1 = Motor_c()
 			self.Motor2 = Motor_c()
 			self.Battery = Battery_c()
-			self.FirstTime = t.time()
-			self.LapTimes = []
-			self.LapTimeIndex = 0 
+			self.Lights = Lights_c()
+			self.Interface = Interface_c()
 
  

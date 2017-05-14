@@ -17,6 +17,7 @@ def sendToTelemetry(Car):
 def main():
 
 	Car = Car_c()
+
 	Conn = SerialModule()
 	if Conn.MODE == 'CAR':
 		UI = Gui()

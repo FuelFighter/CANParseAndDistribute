@@ -97,8 +97,10 @@ def updateCarValues(line, Car):
 			Car.Interface.Hazards = False
 		if buttons & 0b100:
 			Car.Interface.Lap = True
+			Car.Interface.LapDoubleClick.press()
 		else:
 			Car.Interface.Lap = False
+			Car.Interface.LapDoubleClick.release()
 		
 		Car.Interface.Light_Level = int(Data[1],16)
 		Car.Interface.WindowWiper_Level = int(Data[2],15)

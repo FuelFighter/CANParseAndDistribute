@@ -29,10 +29,10 @@ class motorLogger():
 		else:
 			pass
 	
-	def write(self, current, rpm, throt, temp):
+	def write(self, Motor):
 		if self.LOGGING:
 			self.log = open(self.currentFile, 'a')
-			newLine = ('{0:5d}, {1:5d}, {2:5d}, {3:5d}\n').format(current,rpm,throt,temp)
+			newLine = ('{0:5d}, {1:5d}, {2:5d}, {3:5d}\n').format(Motor.Current,Motor.RPM,Motor.Throttle,Motor.Temp)
 			self.log.write(newLine)
 			self.log.close()
 		else:
@@ -48,7 +48,7 @@ class motorLogger():
 
 class batteryLogger():
 	LOGGING = False
-	labelString = ('{0:>5s}: {1:>5s}: {2:>5s}: {3:>5s}:').format('mAmp','volt','temp','state')
+	labelString = ('{0:>5s}: {1:>5s}: {2:>5s}: {3:>5s}: {4:>5s}:').format('mAmp','volt','temp','state','error')
 
 	def __init__(self, title):
 		self.title = '-' + title
@@ -70,10 +70,21 @@ class batteryLogger():
 		else:
 			pass
 	
-	def write(self, state, current, voltage, temp):
+	def write(self, Battery, error):
 		if self.LOGGING:
+
+			if Battery.State == 'Idle':
+				voltage = Battery.Stack_Voltage[0] + Batter.Stack_Voltage[1]
+			else:
+				voltage = Battery.Voltage
+
+			Temp = 0
+			for cTemp in Battery.Cell_Temp:
+				if cTemp > Temp:
+					Temp = cTemp 
+
 			self.log = open(self.currentFile, 'a')
-			newLine = ('{0:5d}, {1:5d}, {2:5d}, {3:5s}\n').format(current,voltage,temp,state)
+			newLine = ('{0:5d}, {1:5d}, {2:5d}, {3:5s}, {3:5s}\n').format(Battery.Current,Voltage,Temp,Battery.State,error)
 			self.log.write(newLine)
 			self.log.close()
 		else:
@@ -111,10 +122,10 @@ class carLogger():
 		else:
 			pass
 	
-	def write(self, vel, acl):
+	def write(self, Car):
 		if self.LOGGING:
 			self.log = open(self.currentFile, 'a')
-			newLine = ('{0:5d}, {1:5d}\n').format(vel, acl)
+			newLine = ('{0:5d}, {1:5d}\n').format(Car.Velocity,Car.Acceleration)
 			self.log.write(newLine)
 			self.log.close()
 		else:

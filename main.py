@@ -18,22 +18,46 @@ def sendToTelemetry(Car):
 def main():
 
 	Car = Car_c()
-
 	Conn = SerialModule()
 	if Conn.MODE == 'CAR':
 		UI = Gui()
 		UIRefreshTimer = timer()
 	
 	while(1):
+
+		timerState = UIRefreshTimer.runOut()
+
 		line = Conn.read()
 		if line != '':
 			status = updateCarValues(line, Car)
 			if status != '':
 				print(status)
-		
-		if Conn.MODE == 'CAR' && UIRefreshTimer.runOut():
+
+		if timerState:
+			runCalculations(Car)
+
+		if Car.Interface.LapDoubleClick.triggered():
+			if not Car.log.LOGGING:
+				Car.log.newLog()
+				Car.Motor1.log.newLog()
+				Car.Motor2.log.newLog()
+				Car.Battery.log.newLog()
+			else if Car.log.LOGGING:
+				Car.log.stop()
+				Car.Motor1.log.stop()
+				Car.Motor2.log.stop()
+				Car.Battery.log.stop()
+
+		if Car.log.LOGGING && timerState:
+			Car.log.write(Car)
+			Car.Motor1.log.write(Car.Motor1)
+			Car.Motor2.log.write(Car.Motor2)
+			Car.Battery.log.write(Car.Battery,createBatteryErrorString(Car)
+
+		if Conn.MODE == 'CAR' && timerState:
 			UI.updateVals(Car)
 			UI.refresh()
+
 
 if __name__ == '__main__':
 	main()

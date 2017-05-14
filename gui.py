@@ -133,7 +133,7 @@ class Gui():
 		self.Motor1.setRPM(Car.Motor1.RPM)
 
 		self.Motor2.setThrottle(Car.Motor2.Throttle)
-		self.Motor2.setCurrent(Car.Motor2.Current)
+		self.Motor2.setCurrent(Car.Motor2.Current/1000)
 		self.Motor2.setRPM(Car.Motor2.RPM)
 
 		self.Battery.setVoltage(Car.Battery.Voltage/1000)

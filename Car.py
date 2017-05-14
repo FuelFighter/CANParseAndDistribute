@@ -1,6 +1,6 @@
-import time
-import car_calculations
-import logging
+import time as time
+import car_calculations as cc
+import logging as l
 
 class Motor_c:
 	def __init__(self, label):
@@ -12,7 +12,7 @@ class Motor_c:
 			self.PWM = 0
 			self.Throttle = 0
 			self.Temp = 0
-			self.log = motorLogger(label)
+			self.log = l.motorLogger(label)
 
 
 class Battery_c:
@@ -30,14 +30,14 @@ class Battery_c:
 			self.Cell_Voltage = [0,0,0,0,0,0,0,0,0,0,0,0]
 			self.Cell_Temp = [0,0,0,0]
 			self.Stack_Voltage = [0,0]
-			self.log = batteryLogger('battery')
+			self.log = l.batteryLogger('battery')
 
 
 class Interface_c:
 	def __init__(self):
 			self.Brake = False
 			self.Light_Level = 0
-			self.Lights
+			self.Lights = False
 			self.Lap = False
 			self.WindowWiper_State = False
 			self.WindowWiper_Speed = 0
@@ -52,11 +52,12 @@ class Interface_c:
 			self.ThrottleLeft = 0
 			self.ThrottleRight = 0
 			self.Deadmanswitch = False
-			self.LapDoubleClick = multiClick(2,0.5)
+			self.LapDoubleClick = cc.multiClick(2,0.5)
 
 
 
-class Lights_c:
+class Lights_c():
+	def __init__(self):
 			self.Headlights = False
 			self.Headlight_Level = 0
 			self.Brakelights = False
@@ -67,14 +68,15 @@ class Lights_c:
 			self.Hazards = False
 
 
-class Time_c:
-			self.FirstTime = time()
+class Time_c():
+	def __init__(self):
+			self.FirstTime = time.time()
 			self.TotalTime = 0
 			self.LapTimes = []
 			self.LapTimeIndex = 0
 
 
-class Car_c:
+class Car_c():
 	def __init__(self):
 			self.CC_Velocity = 0
 			self.Velocity = 0
@@ -88,6 +90,6 @@ class Car_c:
 			self.Battery = Battery_c()
 			self.Lights = Lights_c()
 			self.Interface = Interface_c()
-			self.log = carLogger('car')
+			self.log = l.carLogger('car')
 
  

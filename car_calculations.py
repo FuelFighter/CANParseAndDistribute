@@ -1,4 +1,4 @@
-import timerHandler
+import timerHandler as t
 
 
 TIRE_DIAMETER = 0.55
@@ -12,12 +12,12 @@ class multiClick():
 	pressed = False
 	def __init__(self, threshold, timeout):
 		self.threshold = threshold
-		self.clickTimer = timer(timeout)
+		self.clickTimer = t.timer(timeout)
 
 	def press(self):
-		if (self.pressed == False) && (self.clicks == 0):
+		if (self.pressed == False) & (self.clicks == 0):
 			self.clickTimer.reset()
-		if (self.pressed == False) && (self.clickTimer.runOut() == False):
+		if (self.pressed == False) & (self.clickTimer.runOut() == False):
 			self.clicks = self.clicks + 1
 			self.pressed = True
 		if self.clicks == self.threshold:

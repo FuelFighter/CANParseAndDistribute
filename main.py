@@ -1,10 +1,11 @@
 import serial as ser
 from data import CANID, updateCarValues
 from serialHandler import SerialModule
-from car import Car_c
+from Car import Car_c
 from time import sleep
 from gui import Gui
-import timerHandler
+import car_calculations as cc
+import timerHandler as th
 
 
 def sendToTelemetry(Car):
@@ -21,7 +22,7 @@ def main():
 	Conn = SerialModule()
 	if Conn.MODE == 'CAR':
 		UI = Gui()
-		UIRefreshTimer = timer()
+		UIRefreshTimer = th.timer(0.1)
 	
 	while(1):
 
@@ -34,30 +35,29 @@ def main():
 				print(status)
 
 		if timerState:
-			runCalculations(Car)
+			cc.runCalculations(Car)
 
-		if Car.Interface.LapDoubleClick.triggered():
+		if Car.Interface.LapDoubleClick.state():
 			if not Car.log.LOGGING:
 				Car.log.newLog()
 				Car.Motor1.log.newLog()
 				Car.Motor2.log.newLog()
 				Car.Battery.log.newLog()
-			else if Car.log.LOGGING:
+			elif Car.log.LOGGING:
 				Car.log.stop()
 				Car.Motor1.log.stop()
 				Car.Motor2.log.stop()
 				Car.Battery.log.stop()
 
-		if Car.log.LOGGING && timerState:
+		if Car.log.LOGGING & timerState:
 			Car.log.write(Car)
 			Car.Motor1.log.write(Car.Motor1)
 			Car.Motor2.log.write(Car.Motor2)
-			Car.Battery.log.write(Car.Battery,createBatteryErrorString(Car)
+			Car.Battery.log.write(Car.Battery,createBatteryErrorString(Car))
 
-		if Conn.MODE == 'CAR' && timerState:
+		if (Conn.MODE == 'CAR') & timerState:
 			UI.updateVals(Car)
 			UI.refresh()
-
 
 if __name__ == '__main__':
 	main()

@@ -18,7 +18,7 @@ CANID = {
 	'Motor 1 Status':0x450,
 	'Motor 2 Status':0x460,
 	'Front Lights Status':0x470,
-	'Back Lights Status':0x480
+	'Rear Lights Status':0x480
 }
 
 def updateCarValues(line, Car):
@@ -55,32 +55,58 @@ def updateCarValues(line, Car):
 	elif ID == CANID['Steering Wheel']:
 		Car.Interface.ThrottleRight = int(Data[3], 16)
 		Car.Interface.ThrottleLeft = int(Data[2], 16)
+		Car.Interface.JoyX = int(Data[4],16)
+		Car.Interface.JoyY = int(Data[5],16)
+
+		if Car.Interface.ThrottleRight >= 50:
+			Car.Interface.Deadmanswitch = True
+		else:
+			Car.Interface.Deadmanswitch = False
 
 		buttons = int(Data[1],16)
 		if buttons & 0b1:
+			Car.Interface.JoyButton = True
+		else:
+			Car.Interface.JoyButton = False
+		if buttons & 0b10:
 			Car.Interface.Horn = True
 		else:
 			Car.Interface.Horn = False
-		if buttons & 0b10:
-			Car.Interface. = True
-		else:
-			Car.Interface. = False
 		if buttons & 0b100:
-			Car.Interface. = True
+			Car.Interface.CCButton = True
 		else:
-			Car.Interface. = False
+			Car.Interface.CCButton = False
 		if buttons & 0b1000:
-			Car.Interface. = True
+			Car.Interface.BlinkerLeft = True
 		else:
-			Car.Interface. = False
+			Car.Interface.BLinkerLeft = False
 		if buttons & 0b10000:
-			Car.Interface. = True
+			Car.Interface.BlinkerRight = True
 		else:
-			Car.Interface. = False
-		 
-	elif ID == CANID['Dashboard']:
+			Car.Interface.BlinkerRight = False
 
-		pass
+	elif ID == CANID['Dashboard']:
+		buttons = int(Data[0],16)
+		if buttons & 0b1:
+			Car.Interface.Lights = True
+		else:
+			Car.Interface.Lights = False
+		if buttons & 0b10:
+			Car.Interface.Hazards = True
+		else:
+			Car.Interface.Hazards = False
+		if buttons & 0b100:
+			Car.Interface.Lap = True
+		else:
+			Car.Interface.Lap = False
+		
+		Car.Interface.Light_Level = int(Data[1],16)
+		Car.Interface.WindowWiper_Level = int(Data[2],15)
+
+		if Car.Interface.WindowWiper_Level >= 6:
+			Car.Interface.WindowWiper_State = True
+		else:
+			Car.Interface.WindowWiper_State = False
 
 	elif ID == CANID['BMS Cell V 1-4']:
 		Car.Battery.Cell_Voltage[0] = int(Data[0] + Data[1], 16)
@@ -173,8 +199,44 @@ def updateCarValues(line, Car):
 		pass
 
 	elif ID == CANID['Front Lights Status']:
+		Car.Lights.Headlight_Level = int(Data[1],16)
+
+		states = int(Data[0],16)
+		if states & 0b1:
+			Car.Lights.Headlights = True
+		else:
+			Car.Lights.Headlights = False
+		if states & 0b10:
+			Car.Lights.BlinkerLeft = True
+		else:
+			Car.Lights.BlinkerRight	= False
+		if states & 0b100:
+			Car.Lights.Hazards = True
+		else:
+			Car.Lights.Hazards = False
 		pass
 
+	elif ID == CANID['Rear Lights Status']:
+		Car.Lights.Rearlight_Level = int(Data[1],16)
+
+		states = int(Data[0],16)
+		if states & 0b1:
+			Car.Lights.RearLights = True
+		else:
+			Car.Lights.Rearlights = False
+		if states & 0b10:
+			Car.Lights.BlinkerLeft = True
+		else:
+			Car.Lights.BlinkerRight	= False
+		if states & 0b100:
+			Car.Lights.Hazards = True
+		else:
+			Car.Lights.Hazards = False
+		if states & 0b1000:
+			Car.Lights.Brakelights = True
+		else:
+			Car.Lights.Brakelights = False
+		pass
 	else:
 		pass
 

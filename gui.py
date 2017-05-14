@@ -141,7 +141,7 @@ class Gui():
 		self.Battery.setState(Car.Battery.State)
 
 
-		errorString = createErrorString(Car)
+		errorString = createBatteryErrorString(Car)
 
 		length = len(errorString)
 		self.ErrorVar.variablelabel.config(width=length)

@@ -1,4 +1,9 @@
-# CANParseAndDistribute
+# FF_GUI
+
+Graphical User Interface for Raspberry Pi, reads canData.
+
+
+# Old Description
 Tool for intercepting serial data, splitting it up and translating to comma seperated values.
 
 

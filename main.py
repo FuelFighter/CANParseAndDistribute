@@ -4,6 +4,7 @@ from serialHandler import SerialModule
 from car import Car_c
 from time import sleep
 from gui import Gui
+import timerHandler
 
 
 def sendToTelemetry(Car):
@@ -21,6 +22,7 @@ def main():
 	Conn = SerialModule()
 	if Conn.MODE == 'CAR':
 		UI = Gui()
+		UIRefreshTimer = timer()
 	
 	while(1):
 		line = Conn.read()
@@ -28,8 +30,8 @@ def main():
 			status = updateCarValues(line, Car)
 			if status != '':
 				print(status)
-
-		if Conn.MODE == 'CAR':
+		
+		if Conn.MODE == 'CAR' && UIRefreshTimer.runOut():
 			UI.updateVals(Car)
 			UI.refresh()
 

@@ -33,14 +33,18 @@ class Interface_c:
 	def __init__(self):
 			self.Brake = False
 			self.Light_Level = 0
-			self.LapButton = False
+			self.Lights
+			self.Lap = False
 			self.WindowWiper_State = False
 			self.WindowWiper_Speed = 0
-			self.HazardLights = False
+			self.Hazards = False
 			self.BlinkerLeft = False
 			self.BlinkerRight = False
-			self.CC_Button = False
+			self.CCButton = False
 			self.Horn = False
+			self.JoyButton = False
+			self.JoyX = 0
+			self.JoyY = 0
 			self.ThrottleLeft = 0
 			self.ThrottleRight = 0
 			self.Deadmanswitch = False
@@ -50,10 +54,11 @@ class Lights_c:
 			self.Headlights = False
 			self.Headlight_Level = 0
 			self.Brakelights = False
-			self.RearLights = False
-			self.RearLight_Level = 0
+			self.Rearlights = False
+			self.Rearlight_Level = 0
 			self.BlinkerLeft = False
 			self.BlinkerRight = False
+			self.Hazards = False
 
 
 class Time_c:

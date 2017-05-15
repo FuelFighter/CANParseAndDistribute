@@ -15,11 +15,13 @@ class multiClick():
 		self.clickTimer = t.timer(timeout)
 
 	def press(self):
-		if (self.pressed == False) & (self.clicks == 0):
-			self.clickTimer.reset()
-		if (self.pressed == False) & (self.clickTimer.runOut() == False):
+		if (self.pressed == False) & (self.clicks == 0) & self.clickTimer.triggered():
+			self.clickTimer.start()
+			
+		if (self.pressed == False) & (self.clickTimer.triggered() == False):
 			self.clicks = self.clicks + 1
 			self.pressed = True
+
 		if self.clicks == self.threshold:
 			self.triggered = True
 
@@ -28,10 +30,15 @@ class multiClick():
 			self.pressed = False
 
 	def state(self):
-		state = self.triggered
-		self.triggered = False
-		self.clicks = 0
-		return state
+		if self.triggered & (self.clickTimer.triggered() == False):
+			self.triggered = False
+			self.clicks = 0
+			return True
+		elif self.clickTimer.triggered():
+			self.clicks = 0
+			return False
+		else:
+			return False
 
 def calculateVelocity(RPM):
 	return RPM*RPM_TO_METER_P_SECOND
@@ -81,10 +88,25 @@ def createBatteryErrorString(Car):
 	return errorString
 
 def calculateStackVoltage(Car):
-	for cVolt in Car.Battery.Cell_Voltage[0:5]:
-		Car.Battery.Stack_Voltage[0] = Car.Battery.Stack_Voltage[0] + cVolt
-	for cVolt in Car.Battery.Cell_Voltage[6:11]:
-		Car.Battery.Stack_Voltage[1] = Car.Battery.Stack_Voltage[1] + cVolt
+	Car.Battery.Stack_Voltage = 0
+	for cVolt in Car.Battery.Cell_Voltage:
+		Car.Battery.Stack_Voltage = Car.Battery.Stack_Voltage + cVolt
+
+def createLoggingString(Car):
+	logstring = ''
+
+	if Car.log.LOGGING:
+		logstring = 'Car, '
+	if Car.Motor1.log.LOGGING:
+		logstring = logstring + 'Motor1, '
+	if Car.Motor2.log.LOGGING:
+		logstring = logstring + 'Motor2, '
+	if Car.Battery.log.LOGGING:
+		logstring = logstring + 'Battery '
+	if logstring == '':
+		logstring = 'No'
+	return logstring
+
 
 def runCalculations(Car):
 	calculateStackVoltage(Car)

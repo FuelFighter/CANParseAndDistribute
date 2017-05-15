@@ -111,36 +111,36 @@ def updateCarValues(line, Car):
 			Car.Interface.WindowWiper_State = False
 
 	elif ID == CANID['BMS Cell V 1-4']:
-		Car.Battery.Cell_Voltage[0] = int(Data[0] + Data[1], 16)
-		Car.Battery.Cell_Voltage[1] = int(Data[2] + Data[3], 16)
-		Car.Battery.Cell_Voltage[2] = int(Data[4] + Data[5], 16)
-		Car.Battery.Cell_Voltage[3] = int(Data[6] + Data[7], 16)
+		Car.Battery.Cell_Voltage[0] = int(Data[1] + Data[0], 16)
+		Car.Battery.Cell_Voltage[1] = int(Data[3] + Data[2], 16)
+		Car.Battery.Cell_Voltage[2] = int(Data[5] + Data[4], 16)
+		Car.Battery.Cell_Voltage[3] = int(Data[7] + Data[6], 16)
 		pass
 
 	elif ID == CANID['BMS Cell V 5-8']:
-		Car.Battery.Cell_Voltage[4] = int(Data[0] + Data[1], 16)
-		Car.Battery.Cell_Voltage[5] = int(Data[2] + Data[3], 16)
-		Car.Battery.Cell_Voltage[6] = int(Data[4] + Data[5], 16)
-		Car.Battery.Cell_Voltage[7] = int(Data[6] + Data[7], 16)
+		Car.Battery.Cell_Voltage[4] = int(Data[1] + Data[0], 16)
+		Car.Battery.Cell_Voltage[5] = int(Data[3] + Data[2], 16)
+		Car.Battery.Cell_Voltage[6] = int(Data[5] + Data[4], 16)
+		Car.Battery.Cell_Voltage[7] = int(Data[7] + Data[6], 16)
 		pass
 
 	elif ID == CANID['BMS Cell V 9-12']:
-		Car.Battery.Cell_Voltage[8] = int(Data[0] + Data[1], 16)
-		Car.Battery.Cell_Voltage[9] = int(Data[2] + Data[3], 16)
-		Car.Battery.Cell_Voltage[10] = int(Data[4] + Data[5], 16)
-		Car.Battery.Cell_Voltage[11] = int(Data[6] + Data[7], 16)
+		Car.Battery.Cell_Voltage[8] = int(Data[1] + Data[0], 16)
+		Car.Battery.Cell_Voltage[9] = int(Data[3] + Data[2], 16)
+		Car.Battery.Cell_Voltage[10] = int(Data[5] + Data[4], 16)
+		Car.Battery.Cell_Voltage[11] = int(Data[7] + Data[6], 16)
 		pass
 
-	elif ID == CANID['BMS Cell Temp']:	
-		Car.Battery.Cell_Temp[0] = int(Data[0] + Data[1], 16)
-		Car.Battery.Cell_Temp[1] = int(Data[2] + Data[3], 16)
-		Car.Battery.Cell_Temp[2] = int(Data[4] + Data[5], 16)
-		Car.Battery.Cell_Temp[3] = int(Data[6] + Data[7], 16)
+	elif ID == CANID['BMS Cell Temp']:
+		Car.Battery.Cell_Temp[0] = int(Data[1] + Data[0], 16)
+		Car.Battery.Cell_Temp[1] = int(Data[3] + Data[2], 16)
+		Car.Battery.Cell_Temp[2] = int(Data[5] + Data[4], 16)
+		Car.Battery.Cell_Temp[3] = int(Data[7] + Data[6], 16)
 		pass
 
 	elif ID == CANID['BMS Volt Current']:
-		Car.Battery.Current = int(Data[0] + Data[1], 16)
-		Car.Battery.Voltage = int(Data[2] + Data[3], 16)
+		Car.Battery.Current = int(Data[1] + Data[0], 16)
+		Car.Battery.Voltage = int(Data[3] + Data[2], 16)
 		pass
 
 	elif ID == CANID['BMS State']:
@@ -156,7 +156,7 @@ def updateCarValues(line, Car):
 		pass
 
 	elif ID == CANID['BMS Error Flags']:
-		errorFlag = int(Data[0] + Data[1], 16)
+		errorFlag = int(Data[0], 16)
 
 		if errorFlag & 0b1:
 			Car.Battery.Error_PreChargeTimeout = True
@@ -186,6 +186,7 @@ def updateCarValues(line, Car):
 			Car.Battery.Error_NoDataOnStartup = True
 		else:
 			Car.Battery.Error_NoDataOnStartup = False
+
 		pass
 
 	elif ID == CANID['Motor 1 Status']:

@@ -21,10 +21,15 @@ class guiStateLabel():
 		self.label.grid(row=row,column=column,sticky=sticky)
 		self.variable = tk.StringVar()
 		self.variablelabel = tk.Label(master, textvariable=self.variable, width=12, font=varFont, bg='white', fg='#222F63')
-		self.variablelabel.grid(row=row,column=column+1,sticky='w')
+		self.variablelabel.grid(row=row,column=column+1,sticky='n')
 
 	def setVar(self, text):
 		self.variable.set(text)
+		length = len(text)
+		self.variablelabel.config(width=length)
+
+	def setColor(self, color):
+		self.variablelabel.config(bg=color)
 
 
 class guiMotor():
@@ -35,7 +40,7 @@ class guiMotor():
 		self.label.grid(row=0,column=0,sticky='e')
 
 		self.throttle = guiVariableLabel(self.frame, 'Throttle:', '%', 1, 0, 'e', varFont, labFont)
-		self.current = guiVariableLabel(self.frame, 'Current:', 'mA', 2, 0, 'e', varFont, labFont)
+		self.current = guiVariableLabel(self.frame, 'Current:', 'A', 2, 0, 'e', varFont, labFont)
 		self.rpm = guiVariableLabel(self.frame, 'RPM:', '', 3, 0, 'e', varFont, labFont)
 
 	def setThrottle(self, value):
@@ -103,10 +108,10 @@ class Gui():
 
 		self.infoFrame = tk.Frame(self.root)
 		self.infoFrame.config(bg='#222F63')
-		self.infoFrame.pack(side='top',padx=5,pady=5)
+		self.infoFrame.pack(side='top',padx=5,pady=5,fill='y')
 
 		self.errorFrame = tk.Frame(self.root)
-		self.errorFrame.config(bg='#222F63')
+		self.errorFrame.config(bg='white')
 		self.errorFrame.pack(side='top',padx=5,pady=5)
 
 		self.Velocity = guiMainWindowVariable(self.mainFrame, 'Velocity:', 'km/h', 0, 0, 'w', self.largeFontBold, self.mediumFont)
@@ -117,8 +122,9 @@ class Gui():
 		self.Motor2 = guiMotor(self.infoFrame, 2, 1, 1, 'w', self.smallFontBold, self.smallFont)
 		self.Battery = guiBattery(self.infoFrame, 1, 2, 'w', self.smallFontBold, self.smallFont)
 
-		self.ErrorVar = guiStateLabel(self.errorFrame, 'Battery Error: ', 0, 0, 'w', self.smallFont, self.smallFontBold)
-
+		self.ErrorVar = guiStateLabel(self.errorFrame, 'Battery Error:', 0, 0, 'e', self.smallFont, self.smallFontBold)
+		self.Logging = guiStateLabel(self.errorFrame, 'Logging:', 1, 0, 'e', self.smallFont, self.smallFontBold)
+		self.Logging.variablelabel.config(width=7)
 
 	def refresh(self):
 		self.root.update_idletasks() 
@@ -136,13 +142,25 @@ class Gui():
 		self.Motor2.setCurrent(Car.Motor2.Current/1000)
 		self.Motor2.setRPM(Car.Motor2.RPM)
 
-		self.Battery.setVoltage(Car.Battery.Voltage/1000)
-		self.Battery.setCurrent(Car.Battery.Current/1000)
 		self.Battery.setState(Car.Battery.State)
+		self.Battery.setCurrent(Car.Battery.Current/1000)
+
+		if (Car.Battery.State == 'Battery Active') | (Car.Battery.State == 'PreCharge'):
+			voltage = Car.Battery.Voltage
+		else:
+			voltage = Car.Battery.Stack_Voltage/10
+
+		self.Battery.setVoltage(voltage/1000)
 
 
 		errorString = createBatteryErrorString(Car)
-
 		length = len(errorString)
 		self.ErrorVar.variablelabel.config(width=length)
-		self.ErrorVar.setVar(errorString)
+		self.ErrorVar.setVar(errorString)	
+
+		if Car.Battery.log.LOGGING:
+			self.Logging.setVar('Enabled')
+			self.Logging.setColor('#37D43D')
+		else:
+			self.Logging.setVar('Disabled')
+			self.Logging.setColor('white')

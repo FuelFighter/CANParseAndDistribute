@@ -52,7 +52,7 @@ class Interface_c:
 			self.ThrottleLeft = 0
 			self.ThrottleRight = 0
 			self.Deadmanswitch = False
-			self.LapDoubleClick = cc.multiClick(2,0.5)
+			self.LapDoubleClick = cc.multiClick(3,0.25)
 
 
 

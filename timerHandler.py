@@ -2,19 +2,24 @@ import time as t
 
 
 class timer():
+	enabled = False
+	timestamp = 0
 	def __init__(self, time):
 		if time != 0:
 			self.refreshtime = time
-			self.timestamp = t.time()
 		else:
 			print('Got no time delay')
 
-	def runOut(self):
-		if(t.time() >= self.timestamp + self.refreshtime):
-			self.timestamp = t.time()
-			return True
+	def triggered(self):
+		if enabled:
+			if(t.time() > self.timestamp + self.refreshtime):
+				return True
 		else:
 			return False
 
-	def reset(self):
+	def stop(self):
+		self.enabled = False
+		
+	def start(self):
+		self.enabled = True
 		self.timestamp = t.time()

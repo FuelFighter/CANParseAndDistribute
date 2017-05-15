@@ -8,25 +8,20 @@ import car_calculations as cc
 import timerHandler as th
 
 
-def sendToTelemetry(Car):
-	#write out the values you want to send to the telemetry viewer, 
-	#single values and comma seperated.
-
-	output = str(Car.Motor1.RPM) + "," + str(Car.Motor2.RPM)
-	output = output + "\n"
-	return str.encode(output)
-
 def main():
 
 	Car = Car_c()
 	Conn = SerialModule()
+
 	if Conn.MODE == 'CAR':
 		UI = Gui()
 		UIRefreshTimer = th.timer(0.1)
 	
 	while(1):
 
-		timerState = UIRefreshTimer.runOut()
+		timerState = UIRefreshTimer.triggered()
+		if timerState:
+			UIRefreshTimer.start()
 
 		line = Conn.read()
 		if line != '':
@@ -53,7 +48,7 @@ def main():
 			Car.log.write(Car)
 			Car.Motor1.log.write(Car.Motor1)
 			Car.Motor2.log.write(Car.Motor2)
-			Car.Battery.log.write(Car.Battery,createBatteryErrorString(Car))
+			Car.Battery.log.write(Car.Battery,cc.createBatteryErrorString(Car))
 
 		if (Conn.MODE == 'CAR') & timerState:
 			UI.updateVals(Car)

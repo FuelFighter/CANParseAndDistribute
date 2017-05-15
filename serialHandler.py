@@ -5,7 +5,7 @@ import time as t
 
 class SerialModule():
 
-	CAN_COMPORT = 'COM21'
+	CAN_COMPORT = 'COM7'
 	CAN_BAUD = '500000'
 
 	TELE_COMPORT = 'COM24'

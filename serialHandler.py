@@ -7,7 +7,7 @@ import car_calculations
 
 class SerialModule():
 
-	CAN_COMPORT = 'COM24'
+	CAN_COMPORT = '/dev/ttyUSB0'
 	CAN_BAUD = '500000'
 
 	TELE2_COMPORT = 'COM22'

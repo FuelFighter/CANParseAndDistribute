@@ -19,8 +19,6 @@ def main():
 	if Conn.MODE == 'CAR':
 		UI = Gui()
 		
-		
-	
 	while(1):
 
 		try:

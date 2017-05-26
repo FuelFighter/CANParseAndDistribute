@@ -28,8 +28,11 @@ class guiStateLabel():
 		length = len(text)
 		self.variablelabel.config(width=length)
 
-	def setColor(self, color):
+	def setBgColor(self, color):
 		self.variablelabel.config(bg=color)
+
+	def setFgColor(self, color):
+		self.variablelabel.config(fg=color)
 
 
 class guiMotor():
@@ -77,6 +80,68 @@ class guiBattery():
 	def setState(self, value):	
 		self.state.setVar(value)
 
+class guiTimer():
+	def __init__(self, master, row, column, sticky, varFont, labFont):
+		self.frame = tk.Frame(master,bg='white')
+		self.frame.grid(row=row,column=column,sticky=sticky,ipadx=2,ipady=2)
+
+		self.time = guiStateLabel(self.frame, 'Time:', 0, 0, 'e', varFont, labFont)
+		self.lapTime = guiStateLabel(self.frame, 'Lap Time:', 1, 0, 'e', varFont, labFont)
+		self.avgLapTime = guiStateLabel(self.frame, 'Avg Lap Time:', 2, 0, 'e', varFont, labFont)
+
+	def setTime(self, value):	
+		self.time.setVar(value)
+
+	def setLapTime(self, value):	
+		self.lapTime.setVar(value)
+
+	def setAvgLapTime(self, value):	
+		self.avgLapTime.setVar(value)
+
+
+class guiLapTimes():
+	def __init__(self, master, row, column, sticky, varFont, labFont):
+		self.frame = tk.Frame(master,bg='white')
+		self.frame.grid(row=row,column=column,sticky=sticky,ipadx=2,ipady=2)
+
+		self.lap0 = guiStateLabel(self.frame, '0:', 1, 0, 'e', varFont, labFont)
+		self.lap1 = guiStateLabel(self.frame, '1:', 2, 0, 'e', varFont, labFont)
+		self.lap2 = guiStateLabel(self.frame, '2:', 3, 0, 'e', varFont, labFont)
+		self.lap3 = guiStateLabel(self.frame, '3:', 4, 0, 'e', varFont, labFont)
+		self.lap4 = guiStateLabel(self.frame, '4:', 5, 0, 'e', varFont, labFont)
+		self.lap5 = guiStateLabel(self.frame, '5:', 6, 0, 'e', varFont, labFont)
+		self.lap6 = guiStateLabel(self.frame, '6:', 7, 0, 'e', varFont, labFont)
+		self.lap7 = guiStateLabel(self.frame, '7:', 8, 0, 'e', varFont, labFont)
+		self.lap8 = guiStateLabel(self.frame, '8:', 9, 0, 'e', varFont, labFont)
+		self.lap9 = guiStateLabel(self.frame, '9:', 10, 0, 'e', varFont, labFont)
+		self.lap10 = guiStateLabel(self.frame, '10:', 11, 0, 'e', varFont, labFont)
+
+	def updateList(self, index, lap_time):
+		if index == 0:
+			self.lap0.setVar(lap_time[index])
+		elif index == 1:
+			self.lap1.setVar(lap_time[index])
+		elif index == 2:
+			self.lap2.setVar(lap_time[index])
+		elif index == 3:
+			self.lap3.setVar(lap_time[index])
+		elif index == 4:
+			self.lap4.setVar(lap_time[index])
+		elif index == 5:
+			self.lap5.setVar(lap_time[index])
+		elif index == 6:
+			self.lap6.setVar(lap_time[index])
+		elif index == 7:
+			self.lap7.setVar(lap_time[index])
+		elif index == 8:
+			self.lap8.setVar(lap_time[index])
+		elif index == 9:
+			self.lap9.setVar(lap_time[index])
+		elif index == 10:
+			self.lap10.setVar(lap_time[index])
+		else:
+			pass
+
 
 class guiMainWindowVariable():
 
@@ -92,45 +157,7 @@ class guiMainWindowVariable():
 	def setVar(self, text):
 		self.variable.set(text)
 
-class lapTimes():
-	startup_time = 0	
-	last_time = 0
-	lap_times = [0]
-	formated_lap_times = [0]
-	lap_index = 0
-	currentTime = 0
 
-	def __init__(self):
-		self.startup_time = time.time()
-
-	def currentLapTime(self):
-		self.currentTime = time.time()
-		lapTime = 0
-		if self.lap_index == 0:
-			lapTime = self.currentTime - self.startup_time
-		else: 
-			lapTime = self.currentTime - self.lap_times[self.lap_index - 1]
-		
-		lapTime = int(lapTime)
-		m, s = divmod(lapTime,60)
-		times = ('%02dm:%02ds') % (m, s)
-		return times
-
-	def newLap(self):
-		self.currentTime = time.time()
-		if self.lap_index == 0:
-			self.lap_times[self.lap_index] = self.currentTime- self.startup_time
-			self.formated_lap_times[self.lap_index] = self.currentLapTime()
-			self.lap_index = self.lap_index + 1
-		else:
-			lapTime = self.currentTime - self.lap_times[self.lap_index-1]
-			self.lap_times.append(lapTime)
-			self.formated_lap_times.append(self.currentLapTime())
-			self.lap_index = self.lap_index + 1
-
-
-
-		
 class Gui():
 	
 	largeFontBold = ("Arial",70,'bold')
@@ -140,12 +167,16 @@ class Gui():
 
 	def __init__(self):
 
-		self.lapHandler = lapTimes()
+		self.lapHandler = lapTimer()
 
 		self.root = tk.Tk()
 		self.root.geometry('800x480')
-		self.root.wm_attributes('-fullscreen','true')
+		#self.root.wm_attributes('-fullscreen','true')
 		self.root.config(bg='#222F63')
+
+		self.timeFrame = tk.Frame(self.root)
+		self.timeFrame.config(bg='white',padx=5,pady=5)
+		self.timeFrame.pack(side='right')
 
 		self.mainFrame = tk.Frame(self.root)
 		self.mainFrame.config(bg='white')
@@ -157,14 +188,10 @@ class Gui():
 
 		self.errorFrame = tk.Frame(self.root)
 		self.errorFrame.config(bg='white')
-		self.errorFrame.pack(side='top',padx=5,pady=5)
+		self.errorFrame.pack(side='top',padx=5,pady=5)	
 
-		#self.lapTime = guiMainWindowVariable(self.mainFrame, 'Time:', '', 0, 0, 'w', self.largeFontBold, self.mediumFont)
-		
-
-		#self.AvgVel = guiMainWindowVariable(self.mainFrame, 'Average Vel:','km/h', 0, 2, 'w', self.largeFontBold, self.mediumFont)
-		#self.Time = guiMainWindowVariable(self.mainFrame, 'Elapsed Time:','min', 2, 0, 'w', self.largeFontBold, self.mediumFont)
-
+		self.Time = guiTimer(self.mainFrame, 1, 0, 'n', self.smallFontBold, self.smallFont)
+		self.LapTimes = guiLapTimes(self.timeFrame, 1, 0, 'w', self.smallFontBold, self.smallFont)
 		self.Motor1 = guiMotor(self.infoFrame, 1, 1, 0, 'w', self.smallFontBold, self.smallFont)
 		self.Motor2 = guiMotor(self.infoFrame, 2, 1, 1, 'w', self.smallFontBold, self.smallFont)
 		self.Battery = guiBattery(self.infoFrame, 1, 2, 'w', self.smallFontBold, self.smallFont)
@@ -179,15 +206,15 @@ class Gui():
 
 	def updateVals(self, Car):
 
-		#velocity = ('{:.2f}').format(calculateKmh(Car.Velocity))
-		#self.lapTime.setVar(self.lapHandler.currentLapTime())
-		#self.AvgVel = Car.AvgVel
+		self.Time.setTime(self.lapHandler.totalTime())
+		self.Time.setAvgLapTime(self.lapHandler.avgLapTime())
+		self.Time.setLapTime(self.lapHandler.currentLapTime())
+		self.LapTimes.updateList(self.lapHandler.lap_index, self.lapHandler.formated_lap_times)
 
 		self.Motor1.setThrottle(Car.Motor1.Throttle)
 		self.Motor1.setCurrent(Car.Motor1.Current)
 		self.Motor1.setRPM(Car.Motor1.RPM)
 		self.Motor1.setState(Car.Motor1.State)
-		#print(Car.Motor1.State)
 
 		self.Motor2.setThrottle(Car.Motor2.Throttle)
 		self.Motor2.setCurrent(Car.Motor2.Current/1000)
@@ -211,7 +238,7 @@ class Gui():
 
 		if Car.Battery.log.LOGGING:
 			self.Logging.setVar('Enabled')
-			self.Logging.setColor('#37D43D')
+			self.Logging.setBgColor('#37D43D')
 		else:
 			self.Logging.setVar('Disabled')
-			self.Logging.setColor('white')
+			self.Logging.setBgColor('white')

@@ -1,5 +1,6 @@
 import timerHandler as t
-
+import time as time
+import math
 
 TIRE_DIAMETER = 0.55
 RPM_TO_METER_P_SECOND = (TIRE_DIAMETER * 3.14159) / 60
@@ -38,6 +39,72 @@ class multiClick():
 			self.clicks = 0
 			self.timer.stop()
 		return False
+
+
+class lapTimer():
+	startup_time = 0
+	lap_times = [0.0]*12
+	lap_timestamps = [0.0]*12
+	formated_lap_times = ['']*12
+	lap_index = 0
+
+	def __init__(self):
+		self.startup_time = time.time()
+
+	def updateTimer(self):
+		if self.lap_index >= 9:
+			return
+
+		self.current_time = time.time()
+		if self.lap_index == 0:
+			self.lap_times[self.lap_index] = self.current_time - self.startup_time
+		else: 
+			self.lap_times[self.lap_index] = self.current_time - self.lap_timestamps[self.lap_index-1]
+
+		self.lap_timestamps[self.lap_index] = self.current_time
+		self.formated_lap_times[self.lap_index] = self.formatSeconds(self.lap_times[self.lap_index])
+
+	def formatSeconds(self, seconds):
+		seconds = int(math.ceil(seconds))
+		m, s = divmod(seconds, 60)
+
+		
+		time_string = ('%02dm:%02ds') % (m, s)
+
+		return time_string
+
+	def newLap(self):
+		if self.lap_index >= 15:
+			return
+		self.updateTimer()
+		self.lap_index = self.lap_index + 1
+
+
+	def currentLapTime(self):
+		return self.formatSeconds(self.lap_times[self.lap_index])
+
+	def avgLapTime(self):
+		if self.lap_index == 0:
+			avgTime = 0
+		elif self.lap_index == 1: 
+			avgTime = 0
+		elif self.lap_index == 2:
+			avgTime = self.lap_times[1]
+		else:
+			tot_time = 0.0
+			for lapTime in self.lap_times[1:(self.lap_index-1)]:
+				tot_time = tot_time + lapTime
+			print(tot_time)
+			tot_time = math.ceil(tot_time)
+			print(str(tot_time) + ' / ' + str(self.lap_index-1))
+			avgTime = tot_time/(self.lap_index)
+			print('= ' + str(avgTime))
+
+		return self.formatSeconds(avgTime)
+
+	def totalTime(self):
+		self.current_time = time.time()
+		return self.formatSeconds(self.current_time - self.startup_time)
 
 
 def calculateVelocity(RPM):

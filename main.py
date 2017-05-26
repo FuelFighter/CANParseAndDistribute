@@ -4,6 +4,7 @@ from serialHandler import SerialModule
 from Car import Car_c
 from time import sleep
 from gui import Gui
+import random as random
 import car_calculations as cc
 import timerHandler as th
 import sys
@@ -18,7 +19,7 @@ def main():
 
 	if Conn.MODE == 'CAR':
 		UI = Gui()
-
+	ceiling = random.random()*1500
 	count = 0
 	while(1):
 
@@ -26,6 +27,7 @@ def main():
 			timerState = UIRefreshTimer.timeout()
 			if timerState:
 				count = count + 1
+				UI.lapHandler.updateTimer()
 				UIRefreshTimer.start()
 
 			line = Conn.read()
@@ -37,9 +39,9 @@ def main():
 				except:
 					pass
 
-
-			if count == 50:
+			if count >= ceiling:
 				UI.lapHandler.newLap()
+				ceiling = random.random()*1500 
 				count = 0
 
 			if timerState:
@@ -49,7 +51,7 @@ def main():
 					UI.updateVals(Car)
 					UI.refresh()
 
-			if Car.Interface.LapDoubleClick.state():
+			if Car.Interface.LapClick.state():
 				if not Car.log.LOGGING:
 					Car.log.newLog()
 					Car.Motor1.log.newLog()
@@ -60,6 +62,14 @@ def main():
 					Car.Motor1.log.stop()
 					Car.Motor2.log.stop()
 					Car.Battery.log.stop()
+
+					Car.log.newLog()
+					Car.Motor1.log.newLog()
+					Car.Motor2.log.newLog()
+					Car.Battery.log.newLog()
+				UI.lapHandler.newLap()
+
+
 
 			if Car.log.LOGGING & timerState:
 				Car.log.write(Car)

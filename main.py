@@ -40,7 +40,9 @@ def main():
 			if timerState:
 				cc.runCalculations(Car)
 				Conn.send(Car)
-				UI.refreshVals()
+				if Conn.MODE == 'CAR':
+					UI.updateVals(Car)
+					UI.refresh()
 
 			if Car.Interface.LapDoubleClick.state():
 				if not Car.log.LOGGING:

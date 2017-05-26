@@ -21,6 +21,8 @@ class motorLogger():
 			self.currentTime = newTime
 			self.titlestring = self.currentTime + self.title
 			self.currentFile = folder + self.titlestring + fileformat
+
+			
 			self.log = open(self.currentFile, 'w')
 			self.log.write(self.titlestring + '\n')
 			self.log.write(self.labelString + '\n')

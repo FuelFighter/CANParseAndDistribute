@@ -22,11 +22,14 @@ CANID = {
 }
 
 def updateCarValues(line, Car):
+	#if line != '':
+	#	print(line)
+
 	if ('[' not in line) | (']' not in line):
 		return 'Invalid Message'
 	
 	if line == '':
-		return
+		return ''
 
 	line = line[line.find('[')+1:line.find(']')]
 	lineArray = line.split(':')
@@ -195,13 +198,12 @@ def updateCarValues(line, Car):
 
 	elif ID == CANID['Motor 1 Status']:
 		status = int(Data[0],16)
-
 		if status == 0:
-			Car.Motor1.Status = "Idle"
+			Car.Motor1.State = "Idle"
 		elif status == 1:
-			Car.Motor1.STatus = "Running"
+			Car.Motor1.State = "Running"
 		elif status == 2:
-			Car.Motor1.Status = "Overload"
+			Car.Motor1.State = "Overload"
 
 		Car.Motor1.Status = int(Data[0],16)
 		Car.Motor1.Throttle = int(Data[1], 16)
@@ -213,11 +215,11 @@ def updateCarValues(line, Car):
 		status = int(Data[0],16)
 
 		if status == 0:
-			Car.Motor2.Status = "Idle"
+			Car.Motor2.State = "Idle"
 		elif status == 1:
-			Car.Motor2.STatus = "Running"
+			Car.Motor2.State = "Running"
 		elif status == 2:
-			Car.Motor2.Status = "Overload"
+			Car.Motor2.State = "Overload"
 		
 		Car.Motor2.Throttle = int(Data[1], 16)
 		Car.Motor2.Current = int(Data[2] + Data[3], 16)

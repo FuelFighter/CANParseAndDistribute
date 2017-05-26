@@ -36,8 +36,9 @@ class guiMotor():
 	def __init__(self, master, number, row, column, sticky, varFont, labFont):
 		self.frame = tk.Frame(master, bg='white')
 		self.frame.grid(row=row,column=column,sticky=sticky,ipadx=2,ipady=2)
-		self.label = tk.Label(self.frame,text="Motor " + str(number) + ":",font=labFont, bg='white', fg='#222F63')
-		self.label.grid(row=0,column=0,sticky='e')
+		self.label = guiStateLabel(self.frame, 'Motor '+ str(number) +':', 0, 0, 'e', varFont, labFont)
+		#self.label = tk.Label(self.frame,text="Motor " + str(number) + ":",font=labFont, bg='white', fg='#222F63')
+		#self.label.grid(row=0,column=0,sticky='e')
 
 		self.throttle = guiVariableLabel(self.frame, 'Throttle:', '%', 1, 0, 'e', varFont, labFont)
 		self.current = guiVariableLabel(self.frame, 'Current:', 'A', 2, 0, 'e', varFont, labFont)
@@ -51,6 +52,9 @@ class guiMotor():
 
 	def setRPM(self,value):
 		self.rpm.setVar(str(value))
+
+	def setState(self,value):
+		self.label.setVar(value)
 
 class guiBattery():
 	def __init__(self, master, row, column, sticky, varFont, labFont):
@@ -139,10 +143,13 @@ class Gui():
 		self.Motor1.setThrottle(Car.Motor1.Throttle)
 		self.Motor1.setCurrent(Car.Motor1.Current)
 		self.Motor1.setRPM(Car.Motor1.RPM)
+		self.Motor1.setState(Car.Motor1.State)
+		#print(Car.Motor1.State)
 
 		self.Motor2.setThrottle(Car.Motor2.Throttle)
 		self.Motor2.setCurrent(Car.Motor2.Current/1000)
 		self.Motor2.setRPM(Car.Motor2.RPM)
+		self.Motor2.setState(Car.Motor2.State)
 
 		self.Battery.setState(Car.Battery.State)
 		self.Battery.setCurrent(Car.Battery.Current/1000)

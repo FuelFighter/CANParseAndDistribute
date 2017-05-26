@@ -4,6 +4,7 @@ import math
 
 TIRE_DIAMETER = 0.55
 RPM_TO_METER_P_SECOND = (TIRE_DIAMETER * 3.14159) / 60
+TARGET_LAP_TIME_s = 234
 
 
 class multiClick():
@@ -94,17 +95,18 @@ class lapTimer():
 			tot_time = 0.0
 			for lapTime in self.lap_times[1:(self.lap_index-1)]:
 				tot_time = tot_time + lapTime
-			print(tot_time)
-			tot_time = math.ceil(tot_time)
-			print(str(tot_time) + ' / ' + str(self.lap_index-1))
-			avgTime = tot_time/(self.lap_index)
-			print('= ' + str(avgTime))
+			tot_time_ceiling = math.ceil(tot_time)
+			avgTime = tot_time_ceiling/(self.lap_index-1)
 
 		return self.formatSeconds(avgTime)
 
 	def totalTime(self):
 		self.current_time = time.time()
-		return self.formatSeconds(self.current_time - self.startup_time)
+		if self.lap_index == 0:
+			tot_time = self.current_time - self.startup_time
+		else:
+			tot_time = self.current_time - self.lap_timestamps[self.lap_index - 1]
+		return self.formatSeconds(tot_time)
 
 
 def calculateVelocity(RPM):

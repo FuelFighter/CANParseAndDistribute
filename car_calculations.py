@@ -2,46 +2,49 @@ import timerHandler as t
 
 
 TIRE_DIAMETER = 0.55
-RPM_TO_METER_P_SECOND = TIRE_DIAMETER * 3.14159 / 60
+RPM_TO_METER_P_SECOND = (TIRE_DIAMETER * 3.14159) / 60
 
 
 class multiClick():
 	clicks = 0
 	threshold = 0
-	triggered = False
 	pressed = False
 	def __init__(self, threshold, timeout):
 		self.threshold = threshold
-		self.clickTimer = t.timer(timeout)
+		self.timer = t.timer(timeout)
 
 	def press(self):
-		if (self.pressed == False) & (self.clicks == 0) & self.clickTimer.triggered():
-			self.clickTimer.start()
-			
-		if (self.pressed == False) & (self.clickTimer.triggered() == False):
-			self.clicks = self.clicks + 1
+		if (not self.pressed) & (not self.timer.enabled):
+			self.timer.start()
 			self.pressed = True
+			self.clicks = 1
+			print('Press')
+		elif (not self.pressed): #& (not self.timer.timeout()):
+			self.pressed = True
+			self.clicks = self.clicks + 1
+			print('Press')
 
-		if self.clicks == self.threshold:
-			self.triggered = True
 
 	def release(self):	
 		if (self.pressed == True):
 			self.pressed = False
 
 	def state(self):
-		if self.triggered & (self.clickTimer.triggered() == False):
-			self.triggered = False
+		if (self.clicks == self.threshold) & (self.timer.timeout()):
 			self.clicks = 0
+			self.timer.stop()
 			return True
-		elif self.clickTimer.triggered():
+		if self.timer.timeout():
 			self.clicks = 0
-			return False
-		else:
-			return False
+			self.timer.stop()
+		return False
+
 
 def calculateVelocity(RPM):
-	return RPM*RPM_TO_METER_P_SECOND
+	velocity = RPM*RPM_TO_METER_P_SECOND
+	if velocity > 50.0:
+		velocity = 0
+	return velocity
 
 def calculateKmh(velocity):
 	return velocity*3.6
@@ -83,7 +86,7 @@ def createBatteryErrorString(Car):
 		errorString = errorString + 'NoDataOnStartup'
 
 	if errorString == '':
-		errorString = 'No Error'
+		errorString = 'Ok'
 
 	return errorString
 

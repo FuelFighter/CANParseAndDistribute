@@ -72,7 +72,6 @@ class batteryLogger():
 	
 	def write(self, Battery, error):
 		if self.LOGGING:
-
 			
 			cellVoltage = int(Battery.Stack_Voltage/10)
 			outVoltage = Battery.Voltage

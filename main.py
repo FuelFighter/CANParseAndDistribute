@@ -13,24 +13,32 @@ def main():
 	Car = Car_c()
 	Conn = SerialModule()
 
+	UIRefreshTimer = th.timer(0.1)
+	UIRefreshTimer.start()
+
 	if Conn.MODE == 'CAR':
 		UI = Gui()
-		UIRefreshTimer = th.timer(0.1)
+		
+		
 	
 	while(1):
 
-		timerState = UIRefreshTimer.triggered()
+		timerState = UIRefreshTimer.timeout()
 		if timerState:
 			UIRefreshTimer.start()
 
 		line = Conn.read()
 		if line != '':
-			status = updateCarValues(line, Car)
-			if status != '':
-				print(status)
+			try:
+				status = updateCarValues(line, Car)
+				if status != '':
+					print(status)
+			except:
+				pass
 
 		if timerState:
 			cc.runCalculations(Car)
+			Conn.Send(Car)
 
 		if Car.Interface.LapDoubleClick.state():
 			if not Car.log.LOGGING:
@@ -50,9 +58,6 @@ def main():
 			Car.Motor2.log.write(Car.Motor2)
 			Car.Battery.log.write(Car.Battery,cc.createBatteryErrorString(Car))
 
-		if (Conn.MODE == 'CAR') & timerState:
-			UI.updateVals(Car)
-			UI.refresh()
 
 if __name__ == '__main__':
 	main()

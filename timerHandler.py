@@ -10,12 +10,11 @@ class timer():
 		else:
 			print('Got no time delay')
 
-	def triggered(self):
-		if enabled:
+	def timeout(self):
+		if self.enabled:
 			if(t.time() > self.timestamp + self.refreshtime):
 				return True
-		else:
-			return False
+		return False
 
 	def stop(self):
 		self.enabled = False

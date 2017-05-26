@@ -24,7 +24,7 @@ CANID = {
 def updateCarValues(line, Car):
 	if ('[' not in line) | (']' not in line):
 		return 'Invalid Message'
-
+		
 	line = line[line.find('[')+1:line.find(']')]
 	lineArray = line.split(':')
 
@@ -47,9 +47,11 @@ def updateCarValues(line, Car):
 			Car.Brake = False
 
 	elif ID == CANID['Encoder']:
-		Car.Motor1.RPM = int(Data[0] + Data[1], 16)
-		Car.Motor2.RPM = int(Data[2] + Data[3], 16)
-		Car.RPM = int(Data[4] + Data[5], 16)
+		Car.Motor1.RPM = int(Data[1] + Data[0], 16)
+		Car.Motor2.RPM = int(Data[3] + Data[2], 16)
+
+		Car.RPM = int(Data[5] + Data[4], 16)
+		
 		Car.Velocity = calculateVelocity(Car.RPM)		
 
 	elif ID == CANID['Steering Wheel']:
@@ -190,15 +192,34 @@ def updateCarValues(line, Car):
 		pass
 
 	elif ID == CANID['Motor 1 Status']:
-		Car.Motor1.Current = int(Data[1] + Data[2], 16)
-		Car.Motor1.PWM = int(Data[3] + Data[4], 16)
-		Car.Motor1.Throttle = int(Data[5], 16)
+		status = int(Data[0],16)
+
+		if status == 0:
+			Car.Motor1.Status = "Idle"
+		elif status == 1:
+			Car.Motor1.STatus = "Running"
+		elif status == 2:
+			Car.Motor1.Status = "Overload"
+
+		Car.Motor1.Status = int(Data[0],16)
+		Car.Motor1.Throttle = int(Data[1], 16)
+		Car.Motor1.Current = int(Data[2] + Data[3], 16)
+		Car.Motor1.PWM = int(Data[4] + Data[5], 16)
 		pass
 
 	elif ID == CANID['Motor 2 Status']:
-		Car.Motor2.Current = int(Data[1] + Data[2], 16)
-		Car.Motor2.PWM = int(Data[3] + Data[4], 16)
-		Car.Motor2.Throttle = int(Data[5], 16)
+		status = int(Data[0],16)
+
+		if status == 0:
+			Car.Motor2.Status = "Idle"
+		elif status == 1:
+			Car.Motor2.STatus = "Running"
+		elif status == 2:
+			Car.Motor2.Status = "Overload"
+		
+		Car.Motor2.Throttle = int(Data[1], 16)
+		Car.Motor2.Current = int(Data[2] + Data[3], 16)
+		Car.Motor2.PWM = int(Data[4] + Data[5], 16)
 		pass
 
 	elif ID == CANID['Front Lights Status']:

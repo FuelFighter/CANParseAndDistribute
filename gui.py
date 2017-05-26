@@ -122,7 +122,7 @@ class Gui():
 		self.Motor2 = guiMotor(self.infoFrame, 2, 1, 1, 'w', self.smallFontBold, self.smallFont)
 		self.Battery = guiBattery(self.infoFrame, 1, 2, 'w', self.smallFontBold, self.smallFont)
 
-		self.ErrorVar = guiStateLabel(self.errorFrame, 'Battery Error:', 0, 0, 'e', self.smallFont, self.smallFontBold)
+		self.ErrorVar = guiStateLabel(self.errorFrame, 'Battery:', 0, 0, 'e', self.smallFont, self.smallFontBold)
 		self.Logging = guiStateLabel(self.errorFrame, 'Logging:', 1, 0, 'e', self.smallFont, self.smallFontBold)
 		self.Logging.variablelabel.config(width=7)
 
@@ -131,7 +131,9 @@ class Gui():
 		self.root.update()
 
 	def updateVals(self, Car):
-		self.Velocity = calculateKmh(Car.Velocity)
+
+		velocity = ('{:.2f}').format(calculateKmh(Car.Velocity))
+		self.Velocity.setVar(velocity)
 		#self.AvgVel = Car.AvgVel
 
 		self.Motor1.setThrottle(Car.Motor1.Throttle)
@@ -151,7 +153,6 @@ class Gui():
 			voltage = Car.Battery.Stack_Voltage/10
 
 		self.Battery.setVoltage(voltage/1000)
-
 
 		errorString = createBatteryErrorString(Car)
 		length = len(errorString)

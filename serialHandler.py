@@ -13,7 +13,7 @@ class SerialModule():
 	TELE1_COMPORT = 'COM24'
 	TELE1_BAUD = '460800'
 
-	TELE2_COMPORT = 'COM21'
+	TELE2_COMPORT = 'COM22'
 	TELE2_BAUD = '460800'
 
 	BYPASS_COMPORT = 'COM26'
@@ -27,7 +27,7 @@ class SerialModule():
 	def __init__(self):
 		asking = True
 		print('Starting Serial Parser')
-		print(('Connection information: CanSerial({}:{}), TelemetrySerial({}:{}) and ByPassSerial({}:{})').format(self.CAN_COMPORT, self.CAN_BAUD, self.TELE1_COMPORT, self.TELE1_BAUD, self.BYPASS_COMPORT, self.BYPASS_BAUD))
+		print(('Connection information: CanSerial({}:{}), TelemetrySerial({}:{}) and ByPassSerial({}:{})').format(self.CAN_COMPORT, self.CAN_BAUD, self.TELE2_COMPORT, self.TELE1_BAUD, self.BYPASS_COMPORT, self.BYPASS_BAUD))
 		print('You may change the Comports and Baudrates in the serialHandler.py')
 		print(('Running {} config..').format(self.MODE))
 
@@ -47,7 +47,7 @@ class SerialModule():
 				self.byPassSerial = ser.Serial(self.BYPASS_COMPORT,self.BYPASS_BAUD)
 				self.tele1Serial = ser.Serial(self.TELE1_COMPORT,self.TELE1_BAUD)
 				self.tele2Serial = ser.Serial(self.TELE2_COMPORT,self.TELE2_BAUD)
-				print(('Connected to CanSerial({}:{}), TelemetrySerial({}:{}) and ByPassSerial({}:{})').format(self.CAN_COMPORT, self.CAN_BAUD, self.TELE1_COMPORT, self.TELE1_BAUD, self.BYPASS_COMPORT, self.BYPASS_BAUD))	
+				print(('Connected to CanSerial({}:{}), TelemetrySerial({}:{}) and ByPassSerial({}:{})').format(self.CAN_COMPORT, self.CAN_BAUD, self.TELE2_COMPORT, self.TELE1_BAUD, self.BYPASS_COMPORT, self.BYPASS_BAUD))	
 			except KeyboardInterrupt:
 				self.close()
 		else:
@@ -63,16 +63,18 @@ class SerialModule():
 				while(self.canSerial.inWaiting()>0) & (self.NEW_LINE == False):
 					data = self.canSerial.read()
 					self.STRING_BUFFER = self.STRING_BUFFER + data.decode('ascii')
-					if ']' in self.STRING_BUFFER:
+					if '\n' in self.STRING_BUFFER:
 						self.NEW_LINE = True
 						self.TCPConn.send(self.STRING_BUFFER)
 						return self.STRING_BUFFER
 
 			elif (self.MODE == 'LAPTOP'):
-				self.STRING_BUFFER = self.STRING_BUFFER + self.TCPConn.receive()
-				if ']' in self.STRING_BUFFER:
+				data = self.TCPConn.receive()
+				if data != '':
+					self.STRING_BUFFER = self.STRING_BUFFER + data
+				if '\n' in self.STRING_BUFFER:
 					self.NEW_LINE = True
-					print(self.STRING_BUFFER	)
+					print(self.STRING_BUFFER)
 					self.byPassSerial.write(str.encode(self.STRING_BUFFER))
 					return self.STRING_BUFFER
 			else:
@@ -87,7 +89,7 @@ class SerialModule():
 		outVoltage = Car.Battery.Voltage
 
 		Temp = 0
-		for cTemp in Battery.Cell_Temp:
+		for cTemp in Car.Battery.Cell_Temp:
 			if cTemp > Temp:
 				Temp = cTemp
 
@@ -104,7 +106,7 @@ class SerialModule():
 		self.tele2Serial.write(str.encode(motor1 + motor2 + battery))
 		#self.tele1Serial.write(str.encode(battery))
 
-	def close(self)
+	def close(self):
 		if self.MODE == 'CAR':
 			self.canSerial.close()
 		elif self.MODE == 'LAPTOP':

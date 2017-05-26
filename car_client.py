@@ -46,11 +46,15 @@ class Client:
             except:
                 self.close()
     def receive(self):
+        if self.timer.timeout():
+            self.close()
+            self.reconnect()
+            self.timer.start()
+            
         try:
             data = self.connection.recv(1024)
             return data.decode('ascii')
         except:
-            print('No Data')
             return ''
                 
     def close(self):

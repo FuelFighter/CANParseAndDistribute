@@ -21,7 +21,7 @@ class motorLogger():
 			self.currentTime = newTime
 			self.titlestring = self.currentTime + self.title
 			self.currentFile = folder + self.titlestring + fileformat
-			self.log = open(self.currentFile, 'a')
+			self.log = open(self.currentFile, 'w')
 			self.log.write(self.titlestring + '\n')
 			self.log.write(self.labelString + '\n')
 			self.log.close()
@@ -62,7 +62,7 @@ class batteryLogger():
 			self.currentTime = newTime
 			self.titlestring = self.currentTime + self.title
 			self.currentFile = folder + self.titlestring + fileformat
-			self.log = open(self.currentFile, 'a')
+			self.log = open(self.currentFile, 'w')
 			self.log.write(self.titlestring + '\n')
 			self.log.write(self.labelString + '\n')
 			self.log.close()
@@ -112,7 +112,7 @@ class carLogger():
 			self.currentTime = newTime
 			self.titlestring = self.currentTime + self.title
 			self.currentFile = folder + self.titlestring + fileformat
-			self.log = open(self.currentFile, 'a')
+			self.log = open(self.currentFile, 'w')
 			self.log.write(self.titlestring + '\n')
 			self.log.write(self.labelString + '\n')
 			self.log.close()

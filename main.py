@@ -6,7 +6,7 @@ from time import sleep
 from gui import Gui
 import car_calculations as cc
 import timerHandler as th
-
+import sys
 
 def main():
 
@@ -23,40 +23,45 @@ def main():
 	
 	while(1):
 
-		timerState = UIRefreshTimer.timeout()
-		if timerState:
-			UIRefreshTimer.start()
+		try:
+			timerState = UIRefreshTimer.timeout()
+			if timerState:
+				UIRefreshTimer.start()
 
-		line = Conn.read()
-		if line != '':
-			try:
-				status = updateCarValues(line, Car)
-				if status != '':
-					print(status)
-			except:
-				pass
+			line = Conn.read()
+			if line != '':
+				try:
+					status = updateCarValues(line, Car)
+					if status != '':
+						print(status)
+				except:
+					pass
 
-		if timerState:
-			cc.runCalculations(Car)
-			Conn.Send(Car)
+			if timerState:
+				cc.runCalculations(Car)
+				Conn.send(Car)
+				UI.refreshVals()
 
-		if Car.Interface.LapDoubleClick.state():
-			if not Car.log.LOGGING:
-				Car.log.newLog()
-				Car.Motor1.log.newLog()
-				Car.Motor2.log.newLog()
-				Car.Battery.log.newLog()
-			elif Car.log.LOGGING:
-				Car.log.stop()
-				Car.Motor1.log.stop()
-				Car.Motor2.log.stop()
-				Car.Battery.log.stop()
+			if Car.Interface.LapDoubleClick.state():
+				if not Car.log.LOGGING:
+					Car.log.newLog()
+					Car.Motor1.log.newLog()
+					Car.Motor2.log.newLog()
+					Car.Battery.log.newLog()
+				elif Car.log.LOGGING:
+					Car.log.stop()
+					Car.Motor1.log.stop()
+					Car.Motor2.log.stop()
+					Car.Battery.log.stop()
 
-		if Car.log.LOGGING & timerState:
-			Car.log.write(Car)
-			Car.Motor1.log.write(Car.Motor1)
-			Car.Motor2.log.write(Car.Motor2)
-			Car.Battery.log.write(Car.Battery,cc.createBatteryErrorString(Car))
+			if Car.log.LOGGING & timerState:
+				Car.log.write(Car)
+				Car.Motor1.log.write(Car.Motor1)
+				Car.Motor2.log.write(Car.Motor2)
+				Car.Battery.log.write(Car.Battery,cc.createBatteryErrorString(Car))
+
+		except KeyboardInterrupt:
+			sys.exit()
 
 
 if __name__ == '__main__':

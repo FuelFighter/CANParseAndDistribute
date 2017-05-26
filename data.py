@@ -24,7 +24,10 @@ CANID = {
 def updateCarValues(line, Car):
 	if ('[' not in line) | (']' not in line):
 		return 'Invalid Message'
-		
+	
+	if line == '':
+		return
+
 	line = line[line.find('[')+1:line.find(']')]
 	lineArray = line.split(':')
 
@@ -37,8 +40,7 @@ def updateCarValues(line, Car):
 
 	for d in Data:
  		if d == '':
- 			error = 'No Data'
- 			return error
+ 			return 
 
 	if ID == CANID['Brake']:
 		if int(Data[0],16) == 1:

@@ -18,12 +18,14 @@ def main():
 
 	if Conn.MODE == 'CAR':
 		UI = Gui()
-		
+
+	count = 0
 	while(1):
 
 		try:
 			timerState = UIRefreshTimer.timeout()
 			if timerState:
+				count = count + 1
 				UIRefreshTimer.start()
 
 			line = Conn.read()
@@ -34,6 +36,11 @@ def main():
 						print(status)
 				except:
 					pass
+
+
+			if count == 50:
+				UI.lapHandler.newLap()
+				count = 0
 
 			if timerState:
 				cc.runCalculations(Car)

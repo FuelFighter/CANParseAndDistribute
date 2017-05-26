@@ -1,5 +1,5 @@
 import tkinter as tk
-import time as t
+import time as time
 from car_calculations import *
 
 class guiVariableLabel():
@@ -92,6 +92,44 @@ class guiMainWindowVariable():
 	def setVar(self, text):
 		self.variable.set(text)
 
+class lapTimes():
+	startup_time = 0	
+	last_time = 0
+	lap_times = [0]
+	formated_lap_times = [0]
+	lap_index = 0
+	currentTime = 0
+
+	def __init__(self):
+		self.startup_time = time.time()
+
+	def currentLapTime(self):
+		self.currentTime = time.time()
+		lapTime = 0
+		if self.lap_index == 0:
+			lapTime = self.currentTime - self.startup_time
+		else: 
+			lapTime = self.currentTime - self.lap_times[self.lap_index - 1]
+		
+		lapTime = int(lapTime)
+		m, s = divmod(lapTime,60)
+		times = ('%02dm:%02ds') % (m, s)
+		return times
+
+	def newLap(self):
+		self.currentTime = time.time()
+		if self.lap_index == 0:
+			self.lap_times[self.lap_index] = self.currentTime- self.startup_time
+			self.formated_lap_times[self.lap_index] = self.currentLapTime()
+			self.lap_index = self.lap_index + 1
+		else:
+			lapTime = self.currentTime - self.lap_times[self.lap_index-1]
+			self.lap_times.append(lapTime)
+			self.formated_lap_times.append(self.currentLapTime())
+			self.lap_index = self.lap_index + 1
+
+
+
 		
 class Gui():
 	
@@ -101,6 +139,9 @@ class Gui():
 	smallFontBold = ("Arial",14,'bold')
 
 	def __init__(self):
+
+		self.lapHandler = lapTimes()
+
 		self.root = tk.Tk()
 		self.root.geometry('800x480')
 		self.root.wm_attributes('-fullscreen','true')
@@ -118,7 +159,9 @@ class Gui():
 		self.errorFrame.config(bg='white')
 		self.errorFrame.pack(side='top',padx=5,pady=5)
 
-		self.Velocity = guiMainWindowVariable(self.mainFrame, 'Velocity:', 'km/h', 0, 0, 'w', self.largeFontBold, self.mediumFont)
+		#self.lapTime = guiMainWindowVariable(self.mainFrame, 'Time:', '', 0, 0, 'w', self.largeFontBold, self.mediumFont)
+		
+
 		#self.AvgVel = guiMainWindowVariable(self.mainFrame, 'Average Vel:','km/h', 0, 2, 'w', self.largeFontBold, self.mediumFont)
 		#self.Time = guiMainWindowVariable(self.mainFrame, 'Elapsed Time:','min', 2, 0, 'w', self.largeFontBold, self.mediumFont)
 
@@ -136,8 +179,8 @@ class Gui():
 
 	def updateVals(self, Car):
 
-		velocity = ('{:.2f}').format(calculateKmh(Car.Velocity))
-		self.Velocity.setVar(velocity)
+		#velocity = ('{:.2f}').format(calculateKmh(Car.Velocity))
+		#self.lapTime.setVar(self.lapHandler.currentLapTime())
 		#self.AvgVel = Car.AvgVel
 
 		self.Motor1.setThrottle(Car.Motor1.Throttle)

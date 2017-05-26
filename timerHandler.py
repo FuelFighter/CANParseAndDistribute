@@ -4,9 +4,9 @@ import time as t
 class timer():
 	enabled = False
 	timestamp = 0
-	def __init__(self, time):
-		if time != 0:
-			self.refreshtime = time
+	def __init__(self, setTime):
+		if setTime != 0:
+			self.refreshtime = setTime
 		else:
 			print('Got no time delay')
 
@@ -22,3 +22,4 @@ class timer():
 	def start(self):
 		self.enabled = True
 		self.timestamp = t.time()
+

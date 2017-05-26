@@ -7,7 +7,7 @@ import car_calculations
 
 class SerialModule():
 
-	CAN_COMPORT = '/dev/ttyUSB0'
+	CAN_COMPORT = 'COM23'
 	CAN_BAUD = '500000'
 
 	TELE2_COMPORT = 'COM22'
@@ -27,8 +27,7 @@ class SerialModule():
 		print(('Connection information: CanSerial({}:{}), TelemetrySerial({}:{}) and ByPassSerial({}:{})').format(self.CAN_COMPORT, self.CAN_BAUD, self.TELE2_COMPORT, self.TELE2_BAUD, self.BYPASS_COMPORT, self.BYPASS_BAUD))
 		print('You may change the Comports and Baudrates in the serialHandler.py')
 		print(('Running {} config..').format(self.MODE))
-
-
+		
 		self.TCPConn = tcp.Client("37.187.53.31", 800)
 
 		if self.MODE == 'CAR':

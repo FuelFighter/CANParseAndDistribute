@@ -208,15 +208,15 @@ class Gui():
 
 		self.errorFrame = tk.Frame(self.mainFrame)
 		self.errorFrame.config(bg='white')
-		self.errorFrame.grid(row=0,column=2)	
+		self.errorFrame.grid(row=1,column=2)	
 
 		self.infoFrame = tk.Frame(self.root)
 		self.infoFrame.config(bg='#222F63')
 		self.infoFrame.pack(side='top',padx=5,pady=5,fill='y')
 
-		self.timeFrame = tk.Frame(self.mainFrame)
+		self.timeFrame = tk.Frame(self.root)
 		self.timeFrame.config(bg='white',padx=5,pady=5)
-		self.timeFrame.grid(row=0,column=0)
+		self.timeFrame.pack(side='top')
 
 		self.Time = guiTimer(self.mainFrame, 1, 0, 'n', self.smallFontBold, self.smallFont)
 		self.LapTimes = guiLapTimes(self.timeFrame, 1, 0, 'w', self.smallFontBold, self.smallFont)

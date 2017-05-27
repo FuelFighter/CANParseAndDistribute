@@ -208,7 +208,7 @@ class Gui():
 
 		self.errorFrame = tk.Frame(self.mainFrame)
 		self.errorFrame.config(bg='white')
-		self.errorFrame.grid(row=0,column=0)	
+		self.errorFrame.grid(row=0,column=2)	
 
 		self.infoFrame = tk.Frame(self.root)
 		self.infoFrame.config(bg='#222F63')

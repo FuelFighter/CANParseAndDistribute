@@ -1,5 +1,6 @@
 import time 
 import random as r
+import posixpath as pp
 
 folder = 'Logs/'
 fileformat = '.txt'

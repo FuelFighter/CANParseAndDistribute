@@ -20,6 +20,8 @@ def main():
 	if Conn.MODE == 'CAR':
 		UI = Gui()
 
+	lapClicked = False
+
 	while(1):
 
 		try:
@@ -44,7 +46,7 @@ def main():
 					UI.updateVals(Car)
 					UI.refresh()
 
-			if Car.Interface.LapClick.state():
+			if Car.Interface.Lap() & (lapClicked == False):
 				if not Car.log.LOGGING:
 					Car.log.newLog()
 					Car.Motor1.log.newLog()
@@ -61,7 +63,9 @@ def main():
 					Car.Motor2.log.newLog()
 					Car.Battery.log.newLog()
 				UI.lapHandler.newLap()
-
+				lapClicked = True
+			elif (Car.Interface.Lap == False) & lapClicked:
+				lapClicked = False
 
 
 			if Car.log.LOGGING & timerState:

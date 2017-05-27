@@ -2,6 +2,15 @@ import tkinter as tk
 import time as time
 from car_calculations import *
 
+
+TRIPLE_TORQUE_M1 = 12.5
+DOUBLE_TORQUE_M1 = 9
+NOMINAL_TORQUE_M1 = 4.6
+
+TRIPLE_TORQUE_M2 = 21.4
+DOUBLE_TORQUE_M2 = 13.6
+NOMINAL_TORQUE_M2 = 6.8
+
 class guiVariableLabel():
 	def __init__(self, master, text, suffix, row, column, sticky, varFont, labFont):
 		self.label = tk.Label(master, text=text, font=labFont, bg='white',fg='#222F63')
@@ -250,6 +259,8 @@ class Gui():
 		self.Motor2.setCurrent(Car.Motor2.Current/1000)
 		self.Motor2.setRPM(Car.Motor2.RPM)
 		self.Motor2.setState(Car.Motor2.State)
+
+
 
 		self.Battery.setState(Car.Battery.State)
 		self.Battery.setCurrent(Car.Battery.Current/1000)

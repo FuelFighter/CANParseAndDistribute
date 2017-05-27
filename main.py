@@ -19,8 +19,7 @@ def main():
 
 	if Conn.MODE == 'CAR':
 		UI = Gui()
-	ceiling = random.random()*150
-	count = 0
+
 	while(1):
 
 		try:
@@ -38,11 +37,6 @@ def main():
 						print(status)
 				except:
 					pass
-
-			if count >= ceiling:
-				UI.lapHandler.newLap()
-				ceiling = random.random()*150
-				count = 0
 
 			if timerState:
 				cc.runCalculations(Car)

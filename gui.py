@@ -68,7 +68,6 @@ class guiBattery():
 
 		self.voltage = guiVariableLabel(self.frame, 'Voltage:', 'V', 3, 0, 'e', varFont, labFont)
 		self.current = guiVariableLabel(self.frame, 'Current:', 'A', 2, 0, 'e', varFont, labFont)
-		#self.errorFlag = guiStateLabel(self.frame, 'Error:', 4, 0, 'e', varFont, labFont)
 		self.state = guiStateLabel(self.frame, 'State:', 1, 0, 'e', varFont, labFont)
 
 	def setVoltage(self, value):
@@ -103,6 +102,9 @@ class guiLapTimes():
 	def __init__(self, master, row, column, sticky, varFont, labFont):
 		self.frame = tk.Frame(master,bg='white')
 		self.frame.grid(row=row,column=column,sticky=sticky,ipadx=2,ipady=2)
+		self.label = tk.Label(self.frame, text='Lap Times',font=labFont)
+		self.label.grid(row=0,column=1,sticky='w')
+		self.label.config(fg='#222F63',bg='white')
 
 		self.lap0 = guiStateLabel(self.frame, '0:', 1, 0, 'e', varFont, labFont)
 		self.lap1 = guiStateLabel(self.frame, '1:', 2, 0, 'e', varFont, labFont)

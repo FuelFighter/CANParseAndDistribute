@@ -76,12 +76,8 @@ class lapTimer():
 	def newLap(self):
 		self.updateTimer()
 		if self.lap_index > 11:
-			print(self.lap_index)
 			return
 		self.lap_index = self.lap_index + 1
-		print(self.lap_index)	
-		print(self.avgLapTime())
-
 
 	def currentLapTime(self):
 		if self.lap_index > 11:
@@ -102,7 +98,7 @@ class lapTimer():
 
 			avgTime = ((tot_time * 1000)/(self.lap_index-1))/1000
 
-		return math.ceil(avgTime)
+		return math.ceil(avgTime) + 1
 
 	def validLapTIme(self, lap_time):
 		if lap_time >= TARGET_LAP_TIME_s:
@@ -111,11 +107,12 @@ class lapTimer():
 			return '#5CCB76'
 
 	def totalTime(self):
+		self.updateTimer()
 		self.current_time = time.time()
 		if self.lap_index == 0:
 			tot_time = self.current_time - self.startup_time
 		else:
-			tot_time = self.current_time - self.lap_timestamps[self.lap_index - 1]
+			tot_time = self.current_time - self.lap_timestamps[0]
 		return self.formatSeconds(tot_time)
 
 

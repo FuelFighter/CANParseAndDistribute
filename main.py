@@ -46,7 +46,7 @@ def main():
 					UI.updateVals(Car)
 					UI.refresh()
 
-			if Car.Interface.Lap() & (lapClicked == False):
+			if Car.Interface.Lap & (lapClicked == False):
 				if not Car.log.LOGGING:
 					Car.log.newLog()
 					Car.Motor1.log.newLog()

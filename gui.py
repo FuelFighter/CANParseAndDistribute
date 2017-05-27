@@ -116,31 +116,57 @@ class guiLapTimes():
 		self.lap9 = guiStateLabel(self.frame, '9:', 10, 0, 'e', varFont, labFont)
 		self.lap10 = guiStateLabel(self.frame, '10:', 11, 0, 'e', varFont, labFont)
 
-	def updateList(self, index, lap_time):
+	def updateList(self, index, lap_time, lap_times):
 		if index == 0:
 			self.lap0.setVar(lap_time[index])
 		elif index == 1:
 			self.lap1.setVar(lap_time[index])
 		elif index == 2:
+			self.lap1.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap1.setFgColor('white')
 			self.lap2.setVar(lap_time[index])
 		elif index == 3:
+			self.lap2.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap2.setFgColor('white')
 			self.lap3.setVar(lap_time[index])
 		elif index == 4:
+			self.lap3.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap3.setFgColor('white')
 			self.lap4.setVar(lap_time[index])
 		elif index == 5:
+			self.lap4.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap4.setFgColor('white')
 			self.lap5.setVar(lap_time[index])
 		elif index == 6:
+			self.lap5.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap5.setFgColor('white')
 			self.lap6.setVar(lap_time[index])
 		elif index == 7:
+			self.lap6.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap6.setFgColor('white')
 			self.lap7.setVar(lap_time[index])
 		elif index == 8:
+			self.lap7.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap7.setFgColor('white')
 			self.lap8.setVar(lap_time[index])
 		elif index == 9:
+			self.lap8.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap8.setFgColor('white')
 			self.lap9.setVar(lap_time[index])
 		elif index == 10:
+			self.lap9.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap9.setFgColor('white')
 			self.lap10.setVar(lap_time[index])
-		else:
+		elif index == 11:
+			self.lap10.setBgColor(self.validLapTIme(lap_times[index-1]))
+			self.lap10.setFgColor('white')
 			pass
+
+	def validLapTIme(self, lap_time):
+		if lap_time >= TARGET_LAP_TIME_s:
+			return '#FF0000'
+		elif lap_time < TARGET_LAP_TIME_s:
+			return '#5CCB76'
 
 
 class guiMainWindowVariable():
@@ -207,9 +233,11 @@ class Gui():
 	def updateVals(self, Car):
 
 		self.Time.setTime(self.lapHandler.totalTime())
-		self.Time.setAvgLapTime(self.lapHandler.avgLapTime())
+		self.Time.setAvgLapTime(self.lapHandler.formatSeconds(self.lapHandler.avgLapTime()))
 		self.Time.setLapTime(self.lapHandler.currentLapTime())
-		self.LapTimes.updateList(self.lapHandler.lap_index, self.lapHandler.formated_lap_times)
+		self.LapTimes.updateList(self.lapHandler.lap_index, self.lapHandler.formated_lap_times, self.lapHandler.lap_times)
+		self.Time.avgLapTime.setFgColor('white')
+		self.Time.avgLapTime.setBgColor(self.lapHandler.validLapTIme(self.lapHandler.avgLapTime()))
 
 		self.Motor1.setThrottle(Car.Motor1.Throttle)
 		self.Motor1.setCurrent(Car.Motor1.Current)

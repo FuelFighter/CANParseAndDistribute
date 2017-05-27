@@ -4,7 +4,7 @@ import math
 
 TIRE_DIAMETER = 0.55
 RPM_TO_METER_P_SECOND = (TIRE_DIAMETER * 3.14159) / 60
-TARGET_LAP_TIME_s = 234
+TARGET_LAP_TIME_s = 10
 
 
 class multiClick():
@@ -44,21 +44,20 @@ class multiClick():
 
 class lapTimer():
 	startup_time = 0
-	lap_times = [0.0]*12
-	lap_timestamps = [0.0]*12
-	formated_lap_times = ['']*12
+	lap_times = [0.0]*13
+	lap_timestamps = [0.0]*13
+	formated_lap_times = ['']*13
 	lap_index = 0
 
 	def __init__(self):
 		self.startup_time = time.time()
 
 	def updateTimer(self):
-		if self.lap_index >= 9:
-			return
-
 		self.current_time = time.time()
 		if self.lap_index == 0:
 			self.lap_times[self.lap_index] = self.current_time - self.startup_time
+		elif self.lap_index > 11:
+			self.lap_times[self.lap_index] = self.current_time - self.lap_timestamps[11]
 		else: 
 			self.lap_times[self.lap_index] = self.current_time - self.lap_timestamps[self.lap_index-1]
 
@@ -75,13 +74,18 @@ class lapTimer():
 		return time_string
 
 	def newLap(self):
-		if self.lap_index >= 15:
-			return
 		self.updateTimer()
+		if self.lap_index > 11:
+			print(self.lap_index)
+			return
 		self.lap_index = self.lap_index + 1
+		print(self.lap_index)	
+		print(self.avgLapTime())
 
 
 	def currentLapTime(self):
+		if self.lap_index > 11:
+			return self.formatSeconds(self.lap_times[11])
 		return self.formatSeconds(self.lap_times[self.lap_index])
 
 	def avgLapTime(self):
@@ -94,11 +98,17 @@ class lapTimer():
 		else:
 			tot_time = 0.0
 			for lapTime in self.lap_times[1:(self.lap_index-1)]:
-				tot_time = tot_time + lapTime
-			tot_time_ceiling = math.ceil(tot_time)
-			avgTime = tot_time_ceiling/(self.lap_index-1)
+				tot_time = tot_time + math.ceil(lapTime)
 
-		return self.formatSeconds(avgTime)
+			avgTime = ((tot_time * 1000)/(self.lap_index-1))/1000
+
+		return math.ceil(avgTime)
+
+	def validLapTIme(self, lap_time):
+		if lap_time >= TARGET_LAP_TIME_s:
+			return '#FF0000'
+		elif lap_time < TARGET_LAP_TIME_s:
+			return '#5CCB76'
 
 	def totalTime(self):
 		self.current_time = time.time()

@@ -19,7 +19,7 @@ def main():
 
 	if Conn.MODE == 'CAR':
 		UI = Gui()
-	ceiling = random.random()*1500
+	ceiling = random.random()*150
 	count = 0
 	while(1):
 
@@ -41,7 +41,7 @@ def main():
 
 			if count >= ceiling:
 				UI.lapHandler.newLap()
-				ceiling = random.random()*1500 
+				ceiling = random.random()*150
 				count = 0
 
 			if timerState:

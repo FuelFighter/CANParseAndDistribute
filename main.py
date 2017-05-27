@@ -21,6 +21,7 @@ def main():
 		UI = Gui()
 
 	lapClicked = False
+	count = 0
 
 	while(1):
 
@@ -46,7 +47,7 @@ def main():
 					UI.updateVals(Car)
 					UI.refresh()
 
-			if Car.Interface.Lap & (lapClicked == False):
+			if Car.Interface.Lap & (lapClicked == False) | count == 15:
 				if not Car.log.LOGGING:
 					Car.log.newLog()
 					Car.Motor1.log.newLog()
@@ -64,6 +65,7 @@ def main():
 					Car.Battery.log.newLog()
 				UI.lapHandler.newLap()
 				lapClicked = True
+				count = 0
 			elif (Car.Interface.Lap == False) & lapClicked:
 				lapClicked = False
 
@@ -73,7 +75,7 @@ def main():
 				Car.Motor1.log.write(Car.Motor1)
 				Car.Motor2.log.write(Car.Motor2)
 				Car.Battery.log.write(Car.Battery,cc.createBatteryErrorString(Car))
-
+			count = count + 1 
 		except KeyboardInterrupt:
 			sys.exit()
 

@@ -4,7 +4,7 @@ import math
 
 TIRE_DIAMETER = 0.55
 RPM_TO_METER_P_SECOND = (TIRE_DIAMETER * 3.14159) / 60
-TARGET_LAP_TIME_s = 10
+TARGET_LAP_TIME_s = 230
 
 
 class multiClick():

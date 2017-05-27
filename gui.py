@@ -112,11 +112,11 @@ class guiLapTimes():
 		self.lap3 = guiStateLabel(self.frame, '3:', 4, 0, 'e', varFont, labFont)
 		self.lap4 = guiStateLabel(self.frame, '4:', 5, 0, 'e', varFont, labFont)
 		self.lap5 = guiStateLabel(self.frame, '5:', 6, 0, 'e', varFont, labFont)
-		self.lap6 = guiStateLabel(self.frame, '6:', 7, 0, 'e', varFont, labFont)
-		self.lap7 = guiStateLabel(self.frame, '7:', 8, 0, 'e', varFont, labFont)
-		self.lap8 = guiStateLabel(self.frame, '8:', 9, 0, 'e', varFont, labFont)
-		self.lap9 = guiStateLabel(self.frame, '9:', 10, 0, 'e', varFont, labFont)
-		self.lap10 = guiStateLabel(self.frame, '10:', 11, 0, 'e', varFont, labFont)
+		self.lap6 = guiStateLabel(self.frame, '6:', 1, 3, 'e', varFont, labFont)
+		self.lap7 = guiStateLabel(self.frame, '7:', 2, 3, 'e', varFont, labFont)
+		self.lap8 = guiStateLabel(self.frame, '8:', 3, 3, 'e', varFont, labFont)
+		self.lap9 = guiStateLabel(self.frame, '9:', 4, 3, 'e', varFont, labFont)
+		self.lap10 = guiStateLabel(self.frame, '10:', 5, 3, 'e', varFont, labFont)
 
 	def updateList(self, index, lap_time, lap_times):
 		if index == 0:
@@ -209,7 +209,7 @@ class Gui():
 		self.infoFrame = tk.Frame(self.root)
 		self.infoFrame.config(bg='#222F63')
 		self.infoFrame.pack(side='top',padx=5,pady=5,fill='y')
-		
+
 		self.timeFrame = tk.Frame(self.root)
 		self.timeFrame.config(bg='white',padx=5,pady=5)
 		self.timeFrame.pack(side='right')

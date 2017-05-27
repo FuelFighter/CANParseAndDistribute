@@ -41,13 +41,14 @@ def main():
 					pass
 
 			if timerState:
+				count = count + 1 
 				cc.runCalculations(Car)
 				Conn.send(Car)
 				if Conn.MODE == 'CAR':
 					UI.updateVals(Car)
 					UI.refresh()
 
-			if Car.Interface.Lap & (lapClicked == False) | count == 15:
+			if Car.Interface.Lap & (lapClicked == False) | count >= 1500:
 				if not Car.log.LOGGING:
 					Car.log.newLog()
 					Car.Motor1.log.newLog()
@@ -75,7 +76,7 @@ def main():
 				Car.Motor1.log.write(Car.Motor1)
 				Car.Motor2.log.write(Car.Motor2)
 				Car.Battery.log.write(Car.Battery,cc.createBatteryErrorString(Car))
-			count = count + 1 
+
 		except KeyboardInterrupt:
 			sys.exit()
 

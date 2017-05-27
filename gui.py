@@ -206,8 +206,7 @@ class Gui():
 		self.mainFrame.config(bg='white')
 		self.mainFrame.pack(side='top',padx=5,pady=5)
 
-
-		self.errorFrame = tk.Frame(self.root)
+		self.errorFrame = tk.Frame(self.mainFrame)
 		self.errorFrame.config(bg='white')
 		self.errorFrame.pack(side='right',padx=5,pady=5)	
 

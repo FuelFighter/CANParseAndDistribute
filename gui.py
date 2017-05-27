@@ -202,10 +202,6 @@ class Gui():
 		self.root.wm_attributes('-fullscreen','true')
 		self.root.config(bg='#222F63')
 
-		self.timeFrame = tk.Frame(self.root)
-		self.timeFrame.config(bg='white',padx=5,pady=5)
-		self.timeFrame.pack(side='right')
-
 		self.mainFrame = tk.Frame(self.root)
 		self.mainFrame.config(bg='white')
 		self.mainFrame.pack(side='top',padx=5,pady=5)
@@ -213,6 +209,10 @@ class Gui():
 		self.infoFrame = tk.Frame(self.root)
 		self.infoFrame.config(bg='#222F63')
 		self.infoFrame.pack(side='top',padx=5,pady=5,fill='y')
+		
+		self.timeFrame = tk.Frame(self.root)
+		self.timeFrame.config(bg='white',padx=5,pady=5)
+		self.timeFrame.pack(side='right')
 
 		self.errorFrame = tk.Frame(self.root)
 		self.errorFrame.config(bg='white')

@@ -25,7 +25,6 @@ def main():
 		try:
 			timerState = UIRefreshTimer.timeout()
 			if timerState:
-				count = count + 1
 				UI.lapHandler.updateTimer()
 				UIRefreshTimer.start()
 

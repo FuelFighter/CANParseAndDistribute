@@ -11,6 +11,8 @@ import sys
 
 def main():
 
+	sleep(30)
+
 	Car = Car_c()
 	Conn = SerialModule()
 

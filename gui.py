@@ -199,7 +199,7 @@ class Gui():
 
 		self.root = tk.Tk()
 		self.root.geometry('800x480')
-		#self.root.wm_attributes('-fullscreen','true')
+		self.root.wm_attributes('-fullscreen','true')
 		self.root.config(bg='#222F63')
 
 		self.timeFrame = tk.Frame(self.root)
